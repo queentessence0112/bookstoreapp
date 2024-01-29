@@ -1,0 +1,36 @@
+<!-- bookstore/templates/bookstore/home.html -->
+{% extends 'bookstore/base.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+    <div class="home-container">
+        {% if user_logged_out %}
+            <p class="success-message">User logged out successfully.</p>
+        {% endif %}
+        {% if user.is_authenticated %}
+            <h2 class="welcome-message">Welcome, {{ user.username }}!</h2>
+        {% else %}
+            <h2 class="welcome-message">Welcome to the homepage!</h2>
+        {% endif %}
+
+        {% if user.is_authenticated %}
+            <div class="recently-viewed">
+                <h3>Recently Viewed Books:</h3>
+                {% if recently_viewed_books %}
+                    <ul class="book-list">
+                        {% for book in recently_viewed_books %}
+                            <li><a href="{% url 'book_details' book.id %}" class="book-link">{{ book.title }}</a></li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p class="empty-message">No recently viewed books.</p>
+                {% endif %}
+            </div>
+        {% else %}
+            <p class="login-message">Log in to see your recently viewed books.</p>
+        {% endif %}
+
+        <!-- Your other homepage content goes here -->
+    </div>
+{% endblock %}

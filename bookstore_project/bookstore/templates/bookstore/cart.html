@@ -1,0 +1,30 @@
+<!-- bookstore/templates/bookstore/cart.html -->
+{% extends 'bookstore/base.html' %}
+
+{% block title %}Your Cart{% endblock %}
+
+{% block content %}
+    <div class="cart-container">
+        <h2>Your Cart</h2>
+        
+        {% if cart_books %}
+            <ul class="cart-list">
+                {% for cart_book in cart_books %}
+                    <li class="cart-item">
+                        <span class="item-details">
+                            {{ cart_book.book.title }} - Quantity: {{ cart_book.quantity }} - Price: ${{ cart_book.book.price }} 
+                        </span>
+                        <span class="total-price">(Total: ${{ cart_book.total_price }})</span>
+                        <a class="remove-link" href="{% url 'remove_from_cart' cart_book.id %}">Remove</a>
+                    </li>
+                {% endfor %}
+            </ul>
+            <p class="total-price">Total Price: ${{ total_price }}</p>
+            <a class="continue-shopping" href="{% url 'catalogue' %}">Continue Shopping</a>
+            <a class="place-order" href="{% url 'place_order' %}">Place Order</a>
+        {% else %}
+            <p class="empty-cart-message">Your cart is empty.</p>
+            <a class="go-to-catalogue" href="{% url 'catalogue' %}">Go to Catalogue</a>
+        {% endif %}
+    </div>
+{% endblock %}

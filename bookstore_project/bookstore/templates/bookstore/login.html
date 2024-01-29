@@ -1,0 +1,15 @@
+<!-- bookstore/templates/bookstore/login.html -->
+{% extends 'bookstore/base.html' %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+  <div class="login-container">
+    <h2>Login</h2>
+    <form method="post" class="login-form">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit" class="login-button">Login</button>
+    </form>
+  </div>
+{% endblock %}

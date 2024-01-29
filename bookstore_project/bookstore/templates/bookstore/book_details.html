@@ -1,0 +1,32 @@
+<!-- bookstore/templates/bookstore/book_details.html -->
+{% extends 'bookstore/base.html' %}
+
+{% block title %}{{ book.title }} Details{% endblock %}
+
+{% block content %}
+    <div class="book-details-container">
+        <h2 class="book-title">{{ book.title }}</h2>
+        <p class="book-info">Author: {{ book.author.name }}</p>
+        <p class="book-info">Category: {{ book.category.name }}</p>
+        <p class="book-info">Year: {{ book.year }}</p>
+        <p class="book-info">Rating: {{ avg_rating|default:"No ratings yet" }}</p>
+        <p class="book-info">Price: ${{ book.price }}</p>
+        <p class="book-description">{{ book.description }}</p>
+
+        <h3 class="ratings-header">Book Ratings</h3>
+        {% if ratings %}
+            <p class="average-rating">Average Rating: {{ avg_rating|default:"No ratings yet" }}</p>
+        {% else %}
+            <p class="no-ratings">No ratings yet.</p>
+        {% endif %}
+
+        <a class="rate-link" href="{% url 'rate_book' book.id %}">Rate this book</a>
+
+        <form class="add-to-cart-form" action="{% url 'add_to_cart' book.id %}" method="post">
+            {% csrf_token %}
+            <button class="add-to-cart-button" type="submit">Add to Cart</button>
+        </form>
+
+        <a class="back-to-catalogue" href="{% url 'catalogue' %}">Back to Catalogue</a>
+    </div>
+{% endblock %}

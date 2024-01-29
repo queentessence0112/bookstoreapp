@@ -1,0 +1,40 @@
+<!-- bookstore/templates/bookstore/place_order.html -->
+{% extends 'bookstore/base.html' %}
+
+{% block title %}Place Order{% endblock %}
+
+{% block content %}
+  <div class="place-order-container">
+    <h2>Place Order</h2>
+
+    {% if order_placed %}
+      <div class="order-success">
+        <p>Your order has been placed successfully!</p>
+        <p>Order Number: {{ order.id }}</p>
+        <p>Total Price: ${{ order.total_price }}</p>
+        <p>Thank you for shopping with us!</p>
+      </div>
+    {% else %}
+      <form method="post" action="{% url 'place_order' %}" class="order-form">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Place Order">
+      </form>
+
+      <div class="cart-details">
+        <h3>Your Cart</h3>
+        <ul class="cart-list">
+          {% for cart_book in cart_books %}
+            <li>
+              {{ cart_book.book.title }} - Quantity: {{ cart_book.quantity }} - Price: ${{ cart_book.book.price }} (Total: ${{ cart_book.total_price }})
+              <a href="{% url 'remove_from_cart' cart_book.id %}" class="remove-link">Remove</a>
+            </li>
+          {% endfor %}
+        </ul>
+        <p class="total-price">Total Price: ${{ total_price }}</p>
+        <a href="{% url 'catalogue' %}" class="continue-shopping">Continue Shopping</a>
+      </div>
+    {% endif %}
+  </div>
+{% endblock %}
+

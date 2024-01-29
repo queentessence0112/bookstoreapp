@@ -1,0 +1,44 @@
+<!-- bookstore/templates/bookstore/catalogue.html -->
+{% extends 'bookstore/base.html' %}
+
+{% block title %}Catalogue{% endblock %}
+
+{% block content %}
+    <div class="filter-sort-container">
+        <div class="filter-form-container">
+            <form method="get" class="filter-form">
+                {{ form.as_p }}
+                <button type="submit" class="filter-button">Filter</button>
+            </form>
+        </div>
+
+        <div class="filter-form-container">
+            <form method="get" action="{% url 'catalogue' %}" class="filter-form">
+                <label for="sort_by">Sort by:</label>
+                <select name="sort_by" id="sort_by">
+                    <option value="" {% if not sort_by %}selected{% endif %}>-- Default --</option>
+                    <option value="lowest_price" {% if sort_by == 'lowest_price' %}selected{% endif %}>Lowest Price</option>
+                    <option value="highest_price" {% if sort_by == 'highest_price' %}selected{% endif %}>Highest Price</option>
+                </select>
+                <button type="submit" class="sort-button">Sort</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="book-catalogue">
+        <h2>Book Catalogue</h2>
+        <ul class="book-list">
+            {% for book in books %}
+                <li class="book-item">
+                    <div class="book-details">
+                        <h3 class="book-title"><a href="{% url 'book_details' book_id=book.id %}">{{ book.title }}</a></h3>
+                        <p class="book-author">{{ book.author }}</p>
+                        <p class="book-price">${{ book.price }}</p>
+                        <!-- Add more details as needed -->
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endblock %}
+
